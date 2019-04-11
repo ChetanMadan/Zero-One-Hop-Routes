@@ -1,0 +1,3 @@
+stop_times: arrival_time = departure_time
+
+stops repeat
