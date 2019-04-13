@@ -24,8 +24,12 @@ def success():
        startStop = request.form['Start']
        endStop = request.form['End']
        out = check_hops(startStop, endStop)
-
-       return render_template('success.html', Start=startStop,End = endStop, Out=out)
+       if out[0]==0:
+           return render_template('success.html', Start=startStop,End = endStop, Out=out[1], Hops = 0)
+       elif out[0]==1:
+           return render_template('success.html', Start=startStop,End = endStop, Out=out[1], Hops = 1)
+       elif out[0]==-1:
+           return render_template('success.html', Start=startStop,End = endStop, Out=out[1], Hops = 'Not possible')
     else:
        pass
 if __name__ == "__main__":

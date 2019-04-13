@@ -27,9 +27,19 @@ def find_route_ids(name):
     return source_route_id, np.asarray(step4['route_long_name'])
 
 def check_zero_hop(source, dest):
-    return bool(set(find_route_ids(source)[0]).intersection(set(find_route_ids(dest)[0])))
+    ch = set(find_route_ids(source)[0]).intersection(set(find_route_ids(dest)[0]))
+    rts = set(find_route_ids(source)[1]).intersection(set(find_route_ids(dest)[1]))
+    if bool(ch):
+        return rts
+    else:
+        return 0
 
 def find_one_hop(name):
+
+    trips = pd.read_csv('data/trips.txt')
+    stops = pd.read_csv('data/stops.txt')
+    routes = pd.read_csv('data/routes.txt')
+    stop_times = pd.read_csv('data/stop_times.txt')
     bus_from_one = find_route_ids(name)[1]
     print(bus_from_one)
     step_1_1=pd.DataFrame()
@@ -52,8 +62,8 @@ def find_one_hop(name):
     return np.unique(np.asarray(step_1_4['stop_name']))
 
 def check_one_hop(source, dest):
-
-    return bool(set(find_one_hop(source)[0]).intersection(set(find_one_hop(dest)[0])))
+    out = set(find_one_hop(source)[0]).intersection(set(find_one_hop(dest)[0]))
+    return bool(out), out
 
 def check_hops(source, dest):
     trips = pd.read_csv('data/trips.txt')
@@ -61,11 +71,11 @@ def check_hops(source, dest):
     routes = pd.read_csv('data/routes.txt')
     stop_times = pd.read_csv('data/stop_times.txt')
     ch1 = check_zero_hop(source, dest)
-
+    ch2 = check_one_hop(source, dest)
     if ch1:
-        return 0
-    elif check_one_hop(source, dest):
-        return 1
+        return 0, ch1
+    elif ch2[0]:
+        return 1, ch2[1]
     else:
         return -1
 
