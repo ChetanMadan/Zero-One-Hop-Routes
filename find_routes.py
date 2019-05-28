@@ -78,19 +78,3 @@ def check_hops(source, dest):
         return 1, ch2[1]
     else:
         return -1
-
-if __name__=='__main__':
-    trips = pd.read_csv('data/trips.txt')
-    stops = pd.read_csv('data/stops.txt')
-    routes = pd.read_csv('data/routes.txt')
-    stop_times = pd.read_csv('data/stop_times.txt')
-
-    a = check_hops('Karala Village', 'Udyog Nagar')
-    if a==0:
-        print("0 hops")
-    elif a==1:
-        print("1 hop")
-    elif a==-1:
-        print("No route")
-    else:
-        print("ERROR CASE")
